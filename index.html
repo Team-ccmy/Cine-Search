@@ -2,153 +2,95 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CineSearch</title>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineSearch</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
 
-    <header class="container center-align">
-        <h1 class="movie-header">CineSearch</h1>
-    </header>
+  <header class="container center-align">
+    <h1 class="movie-header">CineSearch</h1>
+  </header>
 
-    <form action="/" class="container">
-        <input type="text" id="input-btn" placeholder="Write a word for magic...">
-        <button class="btn waves-effect waves-light" type="submit" id="btn-search">Search</button>
-    </form>
+  <form action="/" class="container">
+    <input type="text" id="input-btn" placeholder="Write a word for magic...">
+    <button class="btn waves-effect waves-light" type="submit" id="btn-search">Search</button>
+  </form>
 
-    <main class="row hidden">
-        <aside class="col s12 m4 l3">
-             <!-- Result List -->
-            <div class="result">
-                <h2 class="card-panel teal lighten-2">Search Result</h2>
-                <ul class="collapsible">
-                    <li>
-                      <div class="collapsible-header">
-                        <i class="material-icons">filter</i>
-                        Ratings
-                        <span class="badge">4</span></div>
-                      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                    </li>
-                    <li>
-                      <div class="collapsible-header">
-                        <i class="material-icons">place</i>
-                        Year of Realese 
-                        <span class="badge">1</span></div>
-                      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                    </li>
-                  </ul>
-            </div>
-             <!-- Bucket List -->
-            <div class="bucket">
-                <h2 class="card-panel teal lighten-2">Bucket List</h2>
-                <ul class="collapsible">
-                    <li>
-                      <div class="collapsible-header">
-                        <i class="material-icons">filter</i>
-                        Sci-Fi
-                        <span class="badge">4</span></div>
-                      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                    </li>
-                    <li>
-                      <div class="collapsible-header">
-                        <i class="material-icons">place</i>
-                        Horror
-                        <span class="badge">1</span></div>
-                      <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
-                    </li>
-                  </ul>
-                <input type="text" id="bucketInput" placeholder="Add to Bucket List...">
-                <button class="btn waves-effect waves-light">Add</button>
-            </div>
-            <!-- Queue List -->
-            <div class="queue">
-                <h2>Queue</h2>
-                <ul class="queue-list"></ul>
-                <input type="text" id="queueInput" placeholder="Add to Queue...">
-                <button class="btn waves-effect waves-light">Add</button>
-            </div>
-        </aside>
+  <main class="row hidden">
+    <aside class="col s12 m4 l3">
+      <!-- Result List -->
+      <div class="result">
+        <h2 class="card-panel teal lighten-2">Search Result</h2>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <i class="material-icons">filter</i>
+              Ratings
+              <span class="badge">4</span></div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+          <li>
+            <div class="collapsible-header">
+              <i class="material-icons">place</i>
+              Year of Realese 
+              <span class="badge">1</span></div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+        </ul>
+      </div>
 
-        <section class="col s12 m8 l9">
-            <div class="video-container">
-                <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0" allowfullscreen></iframe>
-            </div>
-            <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="assets/img/Desktop - 1.png">
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Movie 01<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="images/office.jpg">
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="images/office.jpg">
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="images/office.jpg">
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img class="activator" src="images/office.jpg">
-                </div>
-                <div class="card-content">
-                  <span class="card-title activator grey-text text-darken-4">Card Title<i class="material-icons right">more_vert</i></span>
-                  <p><a href="#">This is a link</a></p>
-                </div>
-                <div class="card-reveal">
-                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                </div>
-              </div>
-        </section>
-    </main>
+      <!-- Bucket List -->
+      <div class="bucket">
+        <h2 class="card-panel teal lighten-2">Bucket List</h2>
+        <ul class="collapsible">
+          <li>
+            <div class="collapsible-header">
+              <i class="material-icons">filter</i>
+              Sci-Fi
+              <span class="badge">4</span></div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+          <li>
+            <div class="collapsible-header">
+              <i class="material-icons">place</i>
+              Horror
+              <span class="badge">1</span></div>
+            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+          </li>
+        </ul>
+        <input type="text" id="bucketInput" placeholder="Add to Bucket List...">
+        <button class="btn waves-effect waves-light">Add</button>
+      </div>
+      <!-- Queue List -->
+      <div class="queue">
+        <h2>Queue</h2>
+        <ul class="queue-list"></ul>
+        <input type="text" id="queueInput" placeholder="Add to Queue...">
+        <button class="btn waves-effect waves-light">Add</button>
+      </div>
+    </aside>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="assets/js/script.js"></script>
+    <section class="col s12 m8 l9">
+      <div class="video-container">
+        <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0"
+          allowfullscreen></iframe>
+      </div>
+      <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="assets/img/Desktop - 1.png">
+      </div>
+      <div id="cardsContainer"></div>
+    </section>
+
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 
 </html>

@@ -1,9 +1,11 @@
+/* Define custom CSS variables */
 :root {
     --main-color: #0E2732;
     --light-color: #ECFCFF;
     --button-color: #00A3ED;
 }
 
+/* Basic body styling */
 body {
     font-family: 'Raleway', sans-serif;
     margin: 0;
@@ -11,15 +13,18 @@ body {
     color: var(--main-color);
 }
 
+/* Header styling */
 header {
     color: var(--main-color);
     padding-top: 25px;
 }
 
+/* Styling for the search form and main content area */
 form, main {
     padding-top: 75px;
 }
 
+/* Styling for the search input group */
 .input-group {
     display: flex; 
     border: 1px solid #ccc; 
@@ -50,12 +55,13 @@ form, main {
     background-color: darken(var(--button-color), 10%); 
 }
 
-
+/* Styling for search result headers */
 .result h2, .bucket h2, .queue h2{
     color: var(--button-color);
     font-size: 24px;
 }
 
+/* Styling for movie cards */
 .card-container {
     display: flex;
     flex-wrap: wrap; /* This allows cards to wrap to the next line if there's not enough space */
@@ -65,8 +71,8 @@ form, main {
 
 /* Override default card size */
 .card {
-    width: 20%; /* Adjust this percentage based on how small you want the card to be */
-    height: 250px;
+    width: 50%; /* Adjust this percentage based on how small you want the card to be */
+    height: auto;
     margin: 0 auto; /* Center the card */
     flex: 0 0 calc(20% - 20px); /* 20% width for each card, minus margin. You can adjust this percentage */
 }

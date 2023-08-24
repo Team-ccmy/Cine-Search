@@ -1,70 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Document title -->
   <title>CineSearch</title>
+  <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+  <!-- Custom stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- Materialize CSS framework -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <!-- Material icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Raleway&display=swap" rel="stylesheet"/>
+  <!-- Fonts from Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Raleway&display=swap" rel="stylesheet" />
 
 </head>
 
 <body>
+  <!-- Main header for the web page -->
   <header class="container center-align">
     <h1 class="movie-header">CineSearch</h1>
   </header>
 
+  <!-- Search form -->
   <form action="/" class="searchForm container">
     <div class="row">
-      <div class="col s12">
-          <div class="input-group">
-              <input type="text" id="search-input" placeholder="Search your next movie...">
-              <button class="btn waves-effect waves-light" type="submit" id="btn-search">Buscar</button>
-          </div>
+
+      <!-- Search input and filter dropdowns -->
+      <div class="col s12 m8">
+        <div class="input-group">
+          <input type="text" id="search-input" placeholder="Search your next movie...">
+        </div>
+        <!-- Genre Dropdown -->
+        <select id="genre-filter">
+          <option value="" disabled selected>Choose Genre</option>
+        </select>
+        <!-- Alphabetical Order Dropdown -->
+        <select id="alphabetical-filter">
+          <option value="" disabled selected>Alphabetical Order</option>
+          <option value="asc">A-Z</option>
+          <option value="desc">Z-A</option>
+        </select>
+        <!-- Rating Dropdown -->
+        <select id="rating-filter">
+          <option value="" disabled selected>Rating</option>
+          <option value="10">10</option>
+          <option value="9">9</option>
+          <option value="8">8</option>
+          <option value="7">7</option>
+          <option value="6">6</option>
+          <option value="5">5</option>
+        </select>
+        <!-- Year Dropdown -->
+        <select id="year-filter">
+          <option value="" disabled selected>Year of Release</option>
+        </select>
+        <!-- Country Dropdown -->
+        <select id="country-filter">
+          <option value="" disabled selected>Country</option>
+        </select>
+      </div>
+
+      <div class="col s12 m4">
+        <!-- Search button -->
+        <button class="btn waves-effect waves-light" type="submit" id="btn-search">Search</button>
       </div>
     </div>
   </form>
 
+  <!-- Main content area for results -->
   <main class="row hidden">
     <aside class="col s12 m4 l3">
-         <!-- Result List -->
-        <div class="result">
-            <h2>Search Result</h2>
-            <ul class="collapsible">
-            </ul>
-        </div>
-         <!-- Bucket List -->
-        <div class="bucket">
-            <h2>Bucket List<i class="material-icons right">delete_sweep</i></h2>
-            <ul class="collapsible">
-            </ul>
-        </div>
-        <!-- Queue List -->
-        <div class="queue">
-            <h2>Queue<i class="material-icons right">queue_play_next</i></h2>
-            <ul class="collapsible">
-            </ul>
-        </div>
+      <!-- Result List -->
+      <div class="result">
+        <h2>Search Result</h2>
+        <ul class="collapsible">
+        </ul>
+      </div>
+      <!-- Bucket List -->
+      <div class="bucket">
+        <h2>Bucket List<i class="material-icons right">delete_sweep</i></h2>
+        <ul class="collapsible">
+        </ul>
+      </div>
+      <!-- Queue List -->
+      <div class="queue">
+        <h2>Queue<i class="material-icons right">queue_play_next</i></h2>
+        <ul class="collapsible">
+        </ul>
+      </div>
     </aside>
 
+    <!-- Movie video and search result cards -->
     <section class="col s12 m8 l9">
-        <div class="video-container">
-            <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="results card-container" id="cardsContainer">
-          <div class="search-result"></div>
-          <div class="searchResultCard"></div>
-        </div>
+      <div class="video-container">
+        <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0"
+          allowfullscreen></iframe>
+      </div>
+      <div class="results card-container" id="cardsContainer">
+        <div class="searchResultCard"></div>
+      </div>
     </section>
   </main>
 
+  <!-- jQuery and Materialize JS library -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+  <!-- Custom JavaScript -->
   <script src="assets/js/script.js"></script>
 </body>
-</html>
 
+</html>

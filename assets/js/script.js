@@ -99,9 +99,36 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                     searchResultCard.appendChild(result);
                 });
+            })
+            .catch(error => {
+                console.error('Error fetching movie data:', error);
             });
-        .catch (error => {
-            console.error('Error fetching movie data:', error);
-        });
     }
+
+    searchForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const query = queryInput.value.trim();
+        const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
+
+        let apiUrl;
+        if (query) {
+            apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
+        } else {
+            apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`;
+        }
+
+        const genreFilter = document.getElementById('genre-filter').value;
+        const alphabeticalOrder = document.getElementById('alphabetical-filter').value;
+        const ratingFilter = document.getElementById('rating-filter').value;
+        const yearFilter = document.getElementById('year-filter').value;
+        const countryFilter = document.getElementById('country-filter').value;
+
+        if (genreFilter) apiUrl += `&with_genres=${genreFilter}`;
+        if (alphabeticalOrder) apiUrl += `&sort_by=original_title.${alphabeticalOrder}`;
+        if (ratingFilter) apiUrl += `&vote_average.gte=${ratingFilter}`;
+        if (yearFilter) apiUrl += `&primary_release_year=${yearFilter}`;
+        if (countryFilter) apiUrl += `&region=${countryFilter}`;
+
+        fetchMovies(apiUrl);
+    });
 })

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     const searchForm = document.querySelector('.searchForm');
-    const queryInput = form.querySelector('input');
+    const queryInput = searchForm.querySelector('input');
     const searchResultCard = document.querySelector('.searchResultCard');
 
     function loadGenres() {
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function loadYears() {
-        const currentYear = new Date.getFullYear();
+        const currentYear = new Date().getFullYear();
         const earliestYear = 1950;
         const yearFilter = document.getElementById('year-filter');
 

@@ -1,13 +1,17 @@
+// Wait for the document to be fully loaded
 document.addEventListener('DOMContentLoaded', function () {
 
+    // Define essential DOM elements
     const searchForm = document.querySelector('.searchForm');
     const queryInput = searchForm.querySelector('input');
     const searchResultCard = document.querySelector('.searchResultCard');
 
+    // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
         const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
         const apiUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
 
+        // Use the fetch function to get data from the API
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
@@ -29,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
     }
 
+    // The function to load years
     function loadYears() {
         const currentYear = new Date().getFullYear();
         const earliestYear = 1950;
@@ -42,6 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // The function to load countries
     function loadCountries() {
         const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
         const apiUrl = `https://api.themoviedb.org/3/configuration/countries?api_key=${apiKey}`;
@@ -69,6 +75,7 @@ document.addEventListener('DOMContentLoaded', function () {
     loadYears();
     loadCountries();
 
+    // Separate function to handle fetching movies
     function fetchMovies(apiUrl) {
         fetch(apiUrl)
             .then(response => response.json())
@@ -105,11 +112,13 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
+    // Event listener for the form submission with both query and filters
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
         const query = queryInput.value.trim();
         const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
 
+        // Check if a search query is provided or not
         let apiUrl;
         if (query) {
             apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
@@ -117,6 +126,7 @@ document.addEventListener('DOMContentLoaded', function () {
             apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`;
         }
 
+        // Fetch by applied filters
         const genreFilter = document.getElementById('genre-filter').value;
         const alphabeticalOrder = document.getElementById('alphabetical-filter').value;
         const ratingFilter = document.getElementById('rating-filter').value;

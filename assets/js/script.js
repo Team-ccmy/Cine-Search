@@ -64,8 +64,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error fetching countries:', error);
             });
     }
-    
+
     loadGenres();
     loadYears();
     loadCountries();
+
+    function fetchMovies(apiUrl) {
+        fetch(apiUrl)
+            .then(response => response.json())
+            .then(data => {
+                const movies = data.results;
+                searchResultCard.innerHTML = '';
+                movies.forEach(movie => {
+                    const { title, release_date, poster_path } = movie;
+
+                    const result = document.createElement('div');
+                    result.classList.add('result');
+                    result.innerHTML = `
+                    <div class="card">
+                        <div class="card-image waves-effect waves-block waves-light">
+                            <img class="activator" src="https://image.tmdb.org/t/p/w185/${poster_path}"><br>
+                        </div>
+                        <div class="card-content">
+                            <span class="card-title activator grey-text text-darken-4 movieTitle">${title}</span>
+                            <span class="year">Year released: ${release_date ? release_date.slice(0, 4) : ''}</span>
+                            <i class="material-icons right"><a href="#">queue_play_next</a></i>
+                            <i class="material-icons right"><a href="#">delete_sweep</a></i>
+                        </div>
+                        <div class="card-reveal">
+                            <span class="card-title grey-text text-darken-4">${title}<i class="material-icons right">close</i></span>
+                            <p>Here is some more information about this product that is only revealed once clicked on.</p>
+                        </div>
+                    </div>
+                `;
+                    searchResultCard.appendChild(result);
+                });
+            });
+        .catch (error => {
+            console.error('Error fetching movie data:', error);
+        });
+    }
 })

@@ -48,32 +48,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // The function to load countries
-    function loadCountries() {
-        const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-        const apiUrl = `https://api.themoviedb.org/3/configuration/countries?api_key=${apiKey}`;
-
-        fetch(apiUrl)
-            .then(response => response.json())
-            .then(countries => {
-                const countryFilter = document.getElementById('country-filter');
-                countries.forEach(country => {
-                    const option = document.createElement('option');
-                    option.value = country.iso_3166_1;
-                    option.textContent = country.english_name;
-                    countryFilter.appendChild(option);
-                });
-
-                const selectItems = document.querySelectorAll('select');
-                const selectInstances = M.FormSelect.init(selectItems);
-            })
-            .catch(error => {
-                console.error('Error fetching countries:', error);
-            });
-    }
 
     loadGenres();
     loadYears();
-    loadCountries();
 
     // Separate function to handle fetching movies
     function fetchMovies(apiUrl) {
@@ -131,13 +108,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const alphabeticalOrder = document.getElementById('alphabetical-filter').value;
         const ratingFilter = document.getElementById('rating-filter').value;
         const yearFilter = document.getElementById('year-filter').value;
-        const countryFilter = document.getElementById('country-filter').value;
+        const languageFilter = document.getElementById('language-filter').value;
 
         if (genreFilter) apiUrl += `&with_genres=${genreFilter}`;
         if (alphabeticalOrder) apiUrl += `&sort_by=original_title.${alphabeticalOrder}`;
         if (ratingFilter) apiUrl += `&vote_average.gte=${ratingFilter}`;
         if (yearFilter) apiUrl += `&primary_release_year=${yearFilter}`;
-        if (countryFilter) apiUrl += `&region=${countryFilter}`;
+        if (languageFilter) apiUrl += `&with_original_language=${languageFilter}`;
 
         fetchMovies(apiUrl);
     });

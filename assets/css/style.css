@@ -1,3 +1,124 @@
-.hidden {
-    display: none;
+:root {
+    --main-color: #0E2732;
+    --light-color: #ECFCFF;
+    --button-color: #00A3ED;
 }
+
+body {
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    height: 100vh;
+    color: var(--main-color);
+}
+
+header {
+    color: var(--main-color);
+    padding-top: 25px;
+}
+
+form, main {
+    padding-top: 75px;
+}
+
+.input-group {
+    display: flex; 
+    border: 1px solid #ccc; 
+    border-radius: 25px; 
+    overflow: hidden; 
+}
+
+#search-input {
+    flex: 1; 
+    border: none; 
+    padding-left: 10px; 
+    border-radius: 25px 0 0 25px; 
+}
+
+#btn-search {
+    border: none; 
+    border-radius: 0 25px 25px 0; 
+    background-color: var(--button-color); 
+    color: #fff; 
+}
+
+#search-input:focus {
+    box-shadow: none; 
+    outline: none;
+}
+
+#btn-search:hover, #btn-search:focus {
+    background-color: darken(var(--button-color), 10%); 
+}
+
+
+.result h2, .bucket h2, .queue h2{
+    color: var(--button-color);
+    font-size: 24px;
+}
+
+.card-container {
+    display: flex;
+    flex-wrap: wrap; /* This allows cards to wrap to the next line if there's not enough space */
+    justify-content: space-between; /* Adds equal space between cards */
+}
+
+
+/* Override default card size */
+.card {
+    width: 20%; /* Adjust this percentage based on how small you want the card to be */
+    height: 250px;
+    margin: 0 auto; /* Center the card */
+    flex: 0 0 calc(20% - 20px); /* 20% width for each card, minus margin. You can adjust this percentage */
+}
+
+/* Adjust the image size accordingly */
+.card .card-image img {
+    width: 100%;
+    height: auto;
+}
+
+/*
+.movieCard{
+width: 250px;
+height: 50px;
+border: 10px;
+border-style: solid;
+border-color: black;
+text-align: center;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
+
+.results{
+display: flex;
+flex-direction: row;
+width: 90%;
+}
+
+.searchResultContainer{
+display: flex;
+flex-direction: row;
+flex-wrap: wrap;
+width: 75%;
+justify-content: space-between;
+}
+
+.movieContainer{
+width: 250px;
+height: 400px;
+border: 10px;
+border-style: solid;
+border-color: black;
+text-align: center;
+position: relative;
+}
+
+.search-result{
+width: 25%;
+}
+
+.movieTitle{
+text-align: center;
+}
+*/

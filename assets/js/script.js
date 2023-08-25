@@ -1,9 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
+const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
 
-    const searchForm = document.querySelector('.searchForm');
-    const queryInput = searchForm.querySelector('input');
-    const searchResults = document.querySelector('.search-result');
-    const searchResultCard = document.querySelector('.searchResultCard');
+document.addEventListener('DOMContentLoaded', function () {
+    const searchForm = document.getElementById('searchForm');
+    const searchInput = document.getElementById('search-input');
 
     // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
@@ -51,47 +50,64 @@ document.addEventListener('DOMContentLoaded', function () {
     loadGenres();
     loadYears();
 
-    // Separate function to handle fetching movies
-    function fetchMovies(apiUrl) {
+    loadFromLocalStorage();
+
+    searchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        searchMovies(searchInput.value);
+    });
+
+    document.getElementById('clear-bucket').addEventListener('click', clearBucket);
+    document.getElementById('clear-queue').addEventListener('click', clearQueue);
+
+
+    function searchMovies(query) {
+        const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
+
         fetch(apiUrl)
             .then(response => response.json())
             .then(data => {
-                const movies = data.results;
-                searchResultCard.innerHTML = '';
-
-                movies.forEach((movie) => {
-                    const { title, release_date, poster_path } = movie;
-                    const result = document.createElement('div');
-                    result.classList.add('result');
-                    result.innerHTML = `
-                    <div class="card">
-                        <div class="card-image waves-effect waves-block waves-light">
-                            <img class="activator" src="https://image.tmdb.org/t/p/w185/${poster_path}" alt="${title} poster">
-                        </div>
-                        <div class="card-content">
-                            <span class="card-title activator grey-text text-darken-4 movieTitle">${title}</span>
-                            <i class="material-icons center-align"><a href="#">delete_sweep</a></i>
-                            <i class="material-icons center-align"><a href="#">queue_play_next</a></i>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">${title}<i class="material-icons right">close</i></span>
-                            <p>Here is some more information about this movie.</p>
-                        </div>
-                    </div>
-                `;
-                    searchResultCard.appendChild(result);
-                });
-
+                displayResults(data.results);
             })
             .catch(error => {
-                console.error('Error fetching movie data:', error);
+                console.error('Error fetching data:', error);
             });
+    }
+
+    function displayResults(movies) {
+        const resultsContainer = document.querySelector('.search-result');
+        resultsContainer.innerHTML = '';
+
+        movies.forEach(movie => {
+            if (movie.poster_path) {
+                const movieCard = document.createElement('div');
+                movieCard.classList.add('movie-card');
+
+                const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
+                movieCard.innerHTML = `
+                <img src="${posterUrl}" alt="${movie.title}">
+                <p>${movie.title}</p>
+                <button data-id="${movie.id}" data-title="${movie.title}" class="add-to-bucket"><i class="material-icons center-align">delete_sweep</i></button>
+                <button data-id="${movie.id}" data-title="${movie.title}" class="add-to-queue"><i class="material-icons center-align">queue_play_next</i></button>
+            `;
+
+                movieCard.querySelector('.add-to-bucket').addEventListener('click', function () {
+                    addToBucket(this.dataset.id, this.dataset.title);
+                });
+
+                movieCard.querySelector('.add-to-queue').addEventListener('click', function () {
+                    addToQueue(this.dataset.id, this.dataset.title);
+                });
+
+                resultsContainer.appendChild(movieCard);
+            }
+        });
     }
 
     // Event listener for the form submission with both query and filters
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        const query = queryInput.value.trim();
+        const query = searchInput.value.trim();
         const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
 
         // Check if a search query is provided or not
@@ -118,117 +134,57 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchMovies(apiUrl);
     });
 
-    // Function to load movies from local storage
-    function loadMoviesFromLocalStorage(listSelector) {
-        const storageKey = listSelector.replace(' ', '').replace('.', '');
-        const savedMovies = JSON.parse(localStorage.getItem(storageKey) || '[]');
-        savedMovies.forEach(movie => addMovieToList(movie, listSelector));
-    }
-
-    loadMoviesFromLocalStorage('.bucket ul');
-    loadMoviesFromLocalStorage('.queue ul');
-
-    // Function to add movie to a specific list
-    function addMovieToList(movieTitle, listSelector) {
-        const list = document.querySelector(listSelector);
-
-        // Check for duplicates
-        const listItemExists = Array.from(list.children).some(li => li.textContent === movieTitle);
-
-        if (listItemExists) {
-            console.log(`Movie: ${movieTitle} already exists in the list.`);
-            return;
-        }
-
+    function addToBucket(movieId, movieTitle) {
+        const bucketList = document.querySelector('.bucket ul');
         const listItem = document.createElement('li');
+        listItem.dataset.id = movieId;
         listItem.textContent = movieTitle;
-        list.appendChild(listItem);
+        bucketList.appendChild(listItem);
 
-        const storageKey = listSelector.replace(' ', '').replace('.', '');
-        const currentList = JSON.parse(localStorage.getItem(storageKey) || '[]');
-        currentList.push(movieTitle);
-        localStorage.setItem(storageKey, JSON.stringify(currentList));
+        saveToLocalStorage('bucket', movieId, movieTitle);
     }
 
-    // Function to handle the click event on the movie icons
-    function handleIconClick(event) {
-        let target = event.target;
+    function addToQueue(movieId, movieTitle) {
+        const queueList = document.querySelector('.queue ul');
+        const listItem = document.createElement('li');
+        listItem.dataset.id = movieId;
+        listItem.textContent = movieTitle;
+        queueList.appendChild(listItem);
 
-        console.log("Clicked on:", target.textContent);
-
-        if (target.tagName !== 'A') {
-            target = target.parentElement;
-        }
-
-        if (!['delete_sweep', 'queue_play_next'].includes(target.textContent)) return;
-
-        const card = target.closest('.card');
-        console.log("Parent card:", card);
-        if (!card) return;
-
-        const titleElement = card.querySelector('.movieTitle');
-        console.log("Title element:", titleElement);
-        if (!titleElement) return;
-
-        const movieTitle = titleElement.textContent;
-        console.log("Movie title:", movieTitle);
-
-        if (target.textContent === 'delete_sweep') {
-            addMovieToList(movieTitle, '.bucket ul');
-        } else if (target.textContent === 'queue_play_next') {
-            addMovieToList(movieTitle, '.queue ul');
-        }
-
-        event.preventDefault();
+        saveToLocalStorage('queue', movieId, movieTitle);
     }
 
-    document.addEventListener('click', handleIconClick);
+    function saveToLocalStorage(listName, movieId, movieTitle) {
+        const existingList = JSON.parse(localStorage.getItem(listName)) || [];
+        existingList.push({ id: movieId, title: movieTitle });
+        localStorage.setItem(listName, JSON.stringify(existingList));
+    }
 
-    // form.addEventListener('submit', async (event) => {
-    //     event.preventDefault();
+    function loadFromLocalStorage() {
+        const bucketList = document.querySelector('.bucket ul');
+        const queueList = document.querySelector('.queue ul');
 
-    //     // Clear previous results
-    //     searchResultCard.innerHTML = '';
+        // Clear the current list in the DOM
+        bucketList.innerHTML = '';
+        queueList.innerHTML = '';
 
-    //     const query = input.value.trim();
-    //     if (!query) {
-    //         alert('Please enter a search term.');
-    //         return;
-    //     }
+        const bucketListData = JSON.parse(localStorage.getItem('bucket')) || [];
+        bucketListData.forEach(movie => addToBucket(movie.id, movie.title));
 
-    //     const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-    //     const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
+        const queueListData = JSON.parse(localStorage.getItem('queue')) || [];
+        queueListData.forEach(movie => addToQueue(movie.id, movie.title));
+    }
 
-    //     try {
-    //         const response = await fetch(apiUrl);
+    function clearBucket() {
+        const bucketList = document.querySelector('.bucket ul');
+        bucketList.innerHTML = '';
+        localStorage.removeItem('bucket');
+    }
 
-    //         if (!response.ok) {
-    //             alert("There was an issue with the response from the server. Please try again later.");
-    //             return;
-    //         }
+    function clearQueue() {
+        const queueList = document.querySelector('.queue ul');
+        queueList.innerHTML = '';
+        localStorage.removeItem('queue');
+    }
 
-    //         const data = await response.json();
-    //         const movies = data.results;
-
-    //         if (!movies.length) {
-    //             alert("No movies found for your search. Please try another query.");
-    //             return;
-    //         }
-
-    //         movies.forEach((movie) => {
-    //             const { title, release_date, poster_path } = movie;
-    //             const result = document.createElement('div');
-    //             result.classList.add('result');
-    //             result.innerHTML =
-    //                 `
-    //             <div class="card">
-    //                 <div class="card-image waves-effect waves-block waves-light">
-    //                     <img class="activator" src="https://image.tmdb.org/t/p/w185/${poster_path}" alt="${title} poster">
-    //                 </div>
-    //                 <div class="card-content">
-    //                     <span class="card-title activator grey-text text-darken-4 movieTitle">${title}</span>
-    //                     <i class="material-icons center-align"><a href="#">delete_sweep</a></i>
-    //                     <i class="material-icons center-align"><a href="#">queue_play_next</a></i>
-    //                 </div>
-   
 });

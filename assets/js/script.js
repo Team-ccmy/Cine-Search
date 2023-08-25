@@ -230,19 +230,5 @@ document.addEventListener('DOMContentLoaded', function () {
     //                     <i class="material-icons center-align"><a href="#">delete_sweep</a></i>
     //                     <i class="material-icons center-align"><a href="#">queue_play_next</a></i>
     //                 </div>
-    //                 <div class="card-reveal">
-    //                     <span class="card-title grey-text text-darken-4">${title}<i class="material-icons right">close</i></span>
-    //                     <p>Here is some more information about this movie.</p>
-    //                 </div>
-    //             </div>
-    //             `;
-    //             searchResultCard.appendChild(result);
-    //         });
-
-    //     } catch (error) {
-    //         alert("There was an error fetching the data. Please try again later.");
-    //         console.error('Error fetching data:', error);
-    //     }
-    // });
-
+   
 });

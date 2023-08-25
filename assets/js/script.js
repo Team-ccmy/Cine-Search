@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
         var apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-        var apiUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
+        var apiUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + apiKey + "&language=en-US";
+
 
         // Use the fetch function to get data from the API
         fetch(apiUrl)
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(function (data) {
                 var genres = data.genres;
+                console.log(genres);
                 var genreFilter = document.getElementById('genre-filter');
 
                 genres.forEach(function (genre) {
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(function (data) {
                 var movies = data.results;
+                console.log(movies);
                 searchResultCard.innerHTML = '';
 
                 movies.forEach(function (movie) {
@@ -106,13 +109,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Fetch by applied filters
         var genreFilter = document.getElementById('genre-filter').value;
-        var alphabeticalOrder = document.getElementById('alphabetical-filter').value;
         var ratingFilter = document.getElementById('rating-filter').value;
         var yearFilter = document.getElementById('year-filter').value;
         var languageFilter = document.getElementById('language-filter').value;
 
         if (genreFilter) apiUrl += '&with_genres=' + genreFilter;
-        if (alphabeticalOrder) apiUrl += '&sort_by=original_title.' + alphabeticalOrder;
         if (ratingFilter) apiUrl += '&vote_average.gte=' + ratingFilter;
         if (yearFilter) apiUrl += '&primary_release_year=' + yearFilter;
         if (languageFilter) apiUrl += '&with_original_language=' + languageFilter;

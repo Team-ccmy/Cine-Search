@@ -105,3 +105,10 @@ main{
     flex-direction: row;
     flex-wrap: wrap;
 }
+
+.searchResultCard{
+    gap: 20px;
+    display: flex;
+    flex-wrap: flex;
+    overflow-x: scroll;
+}

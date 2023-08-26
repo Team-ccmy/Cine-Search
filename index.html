@@ -57,7 +57,7 @@
       </div>
       <div class="col s12 m4">
         <!-- Search button -->
-        <button class="btn waves-effect waves-light" type="submit" id="btn-search">Search</button>
+        <button class="btn waves-effect waves-light" onclick="saveSearch()" type="submit" id="btn-search">Search</button>
       </div>
     </div>
     </div>
@@ -68,7 +68,7 @@
       <!-- Result List -->
       <div class="result">
         <h2>Search Result</h2>
-        <ul class="">
+        <ul id="searchList">
         </ul>
       </div>
       <!-- Bucket List -->
@@ -76,12 +76,14 @@
         <h2>Bucket List <i class="material-icons center-align">delete_sweep</i></h2>
         <ul class="">
         </ul>
+        <button id="clear-bucket">Clear Bucket</button>
       </div>
       <!-- Queue List -->
       <div class="queue">
         <h2>Queue List <i class="material-icons center-align">queue_play_next</i></h2>
         <ul class="">
         </ul>
+        <button id="clear-queue">Clear Queue</button>
       </div>
     </aside>
 

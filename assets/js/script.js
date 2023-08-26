@@ -1,5 +1,32 @@
+window.onload = loadSearches;
+function saveSearch() {
+    let searchText = document.getElementById('search-input').value;
+    if(searchText) {
+        // Save to local storage
+        let searches = JSON.parse(localStorage.getItem('searches') || '[]');
+        searches.push(searchText);
+        localStorage.setItem('searches', JSON.stringify(searches));
+
+        // Display in the list
+        displaySearch(searchText);
+    }
+}
+
+function loadSearches() {
+    let searches = JSON.parse(localStorage.getItem('searches') || '[]');
+    searches.forEach(searchText => displaySearch(searchText));
+}
+
+function displaySearch(searchText) {
+    let ul = document.getElementById('searchList');
+    let li = document.createElement('li');
+    li.textContent = searchText;
+    ul.appendChild(li);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
+    
     var searchForm = document.querySelector('.searchForm');
     var queryInput = searchForm.querySelector('input');
     var searchResults = document.querySelector('.search-result');
@@ -92,6 +119,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error fetching movie data:', error);
             });
     }
+
+    
+
+    
+
 
     // Event listener for the form submission with both query and filters
     searchForm.addEventListener('submit', function (event) {
@@ -188,6 +220,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.addEventListener('click', handleIconClick);
+
+    function clearBucketList() {
+        // Clear the bucket list from the DOM
+        document.querySelector('.bucket ul').innerHTML = '';
+    
+        // Clear the bucket list from localStorage
+        localStorage.setItem('bucketul', JSON.stringify([]));
+    }
+    function clearQueueList() {
+        // Clear the queue list from the DOM
+        document.querySelector('.queue ul').innerHTML = '';
+    
+        // Clear the queue list from localStorage
+        localStorage.setItem('queueul', JSON.stringify([]));
+    }
+
+    document.getElementById('clear-bucket').addEventListener('click', function(event) {
+        clearBucketList();
+        event.preventDefault(); // Prevent any default behavior
+    });
+    
+    document.getElementById('clear-queue').addEventListener('click', function(event) {
+        clearQueueList();
+        event.preventDefault(); // Prevent any default behavior
+    });
+    
 
     // form.addEventListener('submit', async (event) => {
     //     event.preventDefault();

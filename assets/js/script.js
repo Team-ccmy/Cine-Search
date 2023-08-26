@@ -221,6 +221,32 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener('click', handleIconClick);
 
+    function clearBucketList() {
+        // Clear the bucket list from the DOM
+        document.querySelector('.bucket ul').innerHTML = '';
+    
+        // Clear the bucket list from localStorage
+        localStorage.setItem('bucketul', JSON.stringify([]));
+    }
+    function clearQueueList() {
+        // Clear the queue list from the DOM
+        document.querySelector('.queue ul').innerHTML = '';
+    
+        // Clear the queue list from localStorage
+        localStorage.setItem('queueul', JSON.stringify([]));
+    }
+
+    document.getElementById('clear-bucket').addEventListener('click', function(event) {
+        clearBucketList();
+        event.preventDefault(); // Prevent any default behavior
+    });
+    
+    document.getElementById('clear-queue').addEventListener('click', function(event) {
+        clearQueueList();
+        event.preventDefault(); // Prevent any default behavior
+    });
+    
+
     // form.addEventListener('submit', async (event) => {
     //     event.preventDefault();
 

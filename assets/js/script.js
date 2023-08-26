@@ -1,30 +1,62 @@
-const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
+window.onload = loadSearches;
+function saveSearch() {
+    let searchText = document.getElementById('search-input').value;
+    if(searchText) {
+        // Save to local storage
+        let searches = JSON.parse(localStorage.getItem('searches') || '[]');
+        searches.push(searchText);
+        localStorage.setItem('searches', JSON.stringify(searches));
+
+        // Display in the list
+        displaySearch(searchText);
+    }
+}
+
+function loadSearches() {
+    let searches = JSON.parse(localStorage.getItem('searches') || '[]');
+    searches.forEach(searchText => displaySearch(searchText));
+}
+
+function displaySearch(searchText) {
+    let ul = document.getElementById('searchList');
+    let li = document.createElement('li');
+    li.textContent = searchText;
+    ul.appendChild(li);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
-    const searchForm = document.getElementById('searchForm');
-    const searchInput = document.getElementById('search-input');
+
+    
+    var searchForm = document.querySelector('.searchForm');
+    var queryInput = searchForm.querySelector('input');
+    var searchResults = document.querySelector('.search-result');
+    var searchResultCard = document.querySelector('.searchResultCard');
 
     // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
-        const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-        const apiUrl = `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}&language=en-US`;
+        var apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
+        var apiUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key=" + apiKey + "&language=en-US";
+
 
         // Use the fetch function to get data from the API
         fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                const genres = data.genres;
-                const genreFilter = document.getElementById('genre-filter');
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var genres = data.genres;
+                console.log(genres);
+                var genreFilter = document.getElementById('genre-filter');
 
                 genres.forEach(function (genre) {
-                    let option = document.createElement('option');
+                    var option = document.createElement('option');
                     option.value = genre.id;
                     option.textContent = genre.name;
                     genreFilter.appendChild(option);
                 })
 
-                const selectItems = document.querySelectorAll('select');
-                const selectInstances = M.FormSelect.init(selectItems);
+                var selectItems = document.querySelectorAll('select');
+                M.FormSelect.init(selectItems);
             })
             .catch(function (error) {
                 console.error('Error fetching genres:', error);
@@ -50,141 +82,204 @@ document.addEventListener('DOMContentLoaded', function () {
     loadGenres();
     loadYears();
 
-    loadFromLocalStorage();
-
-    searchForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        searchMovies(searchInput.value);
-    });
-
-    document.getElementById('clear-bucket').addEventListener('click', clearBucket);
-    document.getElementById('clear-queue').addEventListener('click', clearQueue);
-
-
-    function searchMovies(query) {
-        const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
-
+    // Separate function to handle fetching movies
+    function fetchMovies(apiUrl) {
         fetch(apiUrl)
-            .then(response => response.json())
-            .then(data => {
-                displayResults(data.results);
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var movies = data.results;
+                console.log(movies);
+                searchResultCard.innerHTML = '';
+
+                movies.forEach(function (movie) {
+                    var title = movie.title, release_date = movie.release_date, poster_path = movie.poster_path;
+                    var result = document.createElement('div');
+                    result.classList.add('result');
+                    result.innerHTML =
+                        '<div class="card">' +
+                        '<div class="card-image waves-effect waves-block waves-light">' +
+                        '<img class="activator" src="https://image.tmdb.org/t/p/w185/' + poster_path + '" alt="' + title + ' poster">' +
+                        '</div>' +
+                        '<div class="card-content">' +
+                        '<span class="card-title activator grey-text text-darken-4 movieTitle">' + title + '</span>' +
+                        '<i class="material-icons center-align"><a href="#">delete_sweep</a></i>' +
+                        '<i class="material-icons center-align"><a href="#">queue_play_next</a></i>' +
+                        '</div>' +
+                        '<div class="card-reveal">' +
+                        '<span class="card-title grey-text text-darken-4">' + title + '<i class="material-icons right">close</i></span>' +
+                        '<p>Here is some more information about this movie.</p>' +
+                        '</div>' +
+                        '</div>';
+                    searchResultCard.appendChild(result);
+                });
             })
             .catch(error => {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching movie data:', error);
             });
     }
 
-    function displayResults(movies) {
-        const resultsContainer = document.querySelector('.search-result');
-        resultsContainer.innerHTML = '';
+    
 
-        movies.forEach(movie => {
-            if (movie.poster_path) {
-                const movieCard = document.createElement('div');
-                movieCard.classList.add('movie-card');
+    
 
-                const posterUrl = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
-                movieCard.innerHTML = `
-                <img src="${posterUrl}" alt="${movie.title}">
-                <p>${movie.title}</p>
-                <button data-id="${movie.id}" data-title="${movie.title}" class="add-to-bucket"><i class="material-icons center-align">delete_sweep</i></button>
-                <button data-id="${movie.id}" data-title="${movie.title}" class="add-to-queue"><i class="material-icons center-align">queue_play_next</i></button>
-            `;
-
-                movieCard.querySelector('.add-to-bucket').addEventListener('click', function () {
-                    addToBucket(this.dataset.id, this.dataset.title);
-                });
-
-                movieCard.querySelector('.add-to-queue').addEventListener('click', function () {
-                    addToQueue(this.dataset.id, this.dataset.title);
-                });
-
-                resultsContainer.appendChild(movieCard);
-            }
-        });
-    }
 
     // Event listener for the form submission with both query and filters
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        const query = searchInput.value.trim();
-        const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
+        var query = queryInput.value.trim();
+        var apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
 
         // Check if a search query is provided or not
-        let apiUrl;
+        var apiUrl;
         if (query) {
-            apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
+            apiUrl = 'https://api.themoviedb.org/3/search/movie?api_key=' + apiKey + '&query=' + query;
         } else {
-            apiUrl = `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}`;
+            apiUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' + apiKey;
         }
 
         // Fetch by applied filters
-        const genreFilter = document.getElementById('genre-filter').value;
-        const alphabeticalOrder = document.getElementById('alphabetical-filter').value;
-        const ratingFilter = document.getElementById('rating-filter').value;
-        const yearFilter = document.getElementById('year-filter').value;
-        const languageFilter = document.getElementById('language-filter').value;
+        var genreFilter = document.getElementById('genre-filter').value;
+        var ratingFilter = document.getElementById('rating-filter').value;
+        var yearFilter = document.getElementById('year-filter').value;
+        var languageFilter = document.getElementById('language-filter').value;
 
-        if (genreFilter) apiUrl += `&with_genres=${genreFilter}`;
-        if (alphabeticalOrder) apiUrl += `&sort_by=original_title.${alphabeticalOrder}`;
-        if (ratingFilter) apiUrl += `&vote_average.gte=${ratingFilter}`;
-        if (yearFilter) apiUrl += `&primary_release_year=${yearFilter}`;
-        if (languageFilter) apiUrl += `&with_original_language=${languageFilter}`;
+        if (genreFilter) apiUrl += '&with_genres=' + genreFilter;
+        if (ratingFilter) apiUrl += '&vote_average.gte=' + ratingFilter;
+        if (yearFilter) apiUrl += '&primary_release_year=' + yearFilter;
+        if (languageFilter) apiUrl += '&with_original_language=' + languageFilter;
 
         fetchMovies(apiUrl);
     });
 
-    function addToBucket(movieId, movieTitle) {
-        const bucketList = document.querySelector('.bucket ul');
-        const listItem = document.createElement('li');
-        listItem.dataset.id = movieId;
+    // Function to load movies from local storage
+    function loadMoviesFromLocalStorage(listSelector) {
+        const storageKey = listSelector.replace(' ', '').replace('.', '');
+        const savedMovies = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        savedMovies.forEach(movie => addMovieToList(movie, listSelector));
+    }
+
+    loadMoviesFromLocalStorage('.bucket ul');
+    loadMoviesFromLocalStorage('.queue ul');
+
+    // Function to add movie to a specific list
+    function addMovieToList(movieTitle, listSelector) {
+        var list = document.querySelector(listSelector);
+
+        // Check for duplicates
+        var listItemExists = Array.from(list.children).some(function (li) {
+            return li.textContent === movieTitle;
+        });
+
+        if (listItemExists) {
+            console.log('Movie: ' + movieTitle + ' already exists in the list.');
+            return;
+        }
+
+        var listItem = document.createElement('li');
         listItem.textContent = movieTitle;
-        bucketList.appendChild(listItem);
+        list.appendChild(listItem);
 
-        saveToLocalStorage('bucket', movieId, movieTitle);
+        var storageKey = listSelector.replace(' ', '').replace('.', '');
+        var currentList = JSON.parse(localStorage.getItem(storageKey) || '[]');
+        currentList.push(movieTitle);
+        localStorage.setItem(storageKey, JSON.stringify(currentList));
     }
 
-    function addToQueue(movieId, movieTitle) {
-        const queueList = document.querySelector('.queue ul');
-        const listItem = document.createElement('li');
-        listItem.dataset.id = movieId;
-        listItem.textContent = movieTitle;
-        queueList.appendChild(listItem);
+    // Function to handle the click event on the movie icons
+    function handleIconClick(event) {
+        var target = event.target;
 
-        saveToLocalStorage('queue', movieId, movieTitle);
+        console.log("Clicked on:", target.textContent);
+
+        if (target.tagName !== 'A') {
+            target = target.parentElement;
+        }
+
+        if (!['delete_sweep', 'queue_play_next'].includes(target.textContent)) return;
+
+        var card = target.closest('.card');
+        console.log("Parent card:", card);
+        if (!card) return;
+
+        var titleElement = card.querySelector('.movieTitle');
+        console.log("Title element:", titleElement);
+        if (!titleElement) return;
+
+        var movieTitle = titleElement.textContent;
+        console.log("Movie title:", movieTitle);
+
+        if (target.textContent === 'delete_sweep') {
+            addMovieToList(movieTitle, '.bucket ul');
+        } else if (target.textContent === 'queue_play_next') {
+            addMovieToList(movieTitle, '.queue ul');
+        }
+
+        event.preventDefault();
     }
 
-    function saveToLocalStorage(listName, movieId, movieTitle) {
-        const existingList = JSON.parse(localStorage.getItem(listName)) || [];
-        existingList.push({ id: movieId, title: movieTitle });
-        localStorage.setItem(listName, JSON.stringify(existingList));
-    }
+    document.addEventListener('click', handleIconClick);
 
-    function loadFromLocalStorage() {
-        const bucketList = document.querySelector('.bucket ul');
-        const queueList = document.querySelector('.queue ul');
+    // form.addEventListener('submit', async (event) => {
+    //     event.preventDefault();
 
-        // Clear the current list in the DOM
-        bucketList.innerHTML = '';
-        queueList.innerHTML = '';
+    //     // Clear previous results
+    //     searchResultCard.innerHTML = '';
 
-        const bucketListData = JSON.parse(localStorage.getItem('bucket')) || [];
-        bucketListData.forEach(movie => addToBucket(movie.id, movie.title));
+    //     const query = input.value.trim();
+    //     if (!query) {
+    //         alert('Please enter a search term.');
+    //         return;
+    //     }
 
-        const queueListData = JSON.parse(localStorage.getItem('queue')) || [];
-        queueListData.forEach(movie => addToQueue(movie.id, movie.title));
-    }
+    //     const apiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
+    //     const apiUrl = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`;
 
-    function clearBucket() {
-        const bucketList = document.querySelector('.bucket ul');
-        bucketList.innerHTML = '';
-        localStorage.removeItem('bucket');
-    }
+    //     try {
+    //         const response = await fetch(apiUrl);
 
-    function clearQueue() {
-        const queueList = document.querySelector('.queue ul');
-        queueList.innerHTML = '';
-        localStorage.removeItem('queue');
-    }
+    //         if (!response.ok) {
+    //             alert("There was an issue with the response from the server. Please try again later.");
+    //             return;
+    //         }
+
+    //         const data = await response.json();
+    //         const movies = data.results;
+
+    //         if (!movies.length) {
+    //             alert("No movies found for your search. Please try another query.");
+    //             return;
+    //         }
+
+    //         movies.forEach((movie) => {
+    //             const { title, release_date, poster_path } = movie;
+    //             const result = document.createElement('div');
+    //             result.classList.add('result');
+    //             result.innerHTML =
+    //                 `
+    //             <div class="card">
+    //                 <div class="card-image waves-effect waves-block waves-light">
+    //                     <img class="activator" src="https://image.tmdb.org/t/p/w185/${poster_path}" alt="${title} poster">
+    //                 </div>
+    //                 <div class="card-content">
+    //                     <span class="card-title activator grey-text text-darken-4 movieTitle">${title}</span>
+    //                     <i class="material-icons center-align"><a href="#">delete_sweep</a></i>
+    //                     <i class="material-icons center-align"><a href="#">queue_play_next</a></i>
+    //                 </div>
+    //                 <div class="card-reveal">
+    //                     <span class="card-title grey-text text-darken-4">${title}<i class="material-icons right">close</i></span>
+    //                     <p>Here is some more information about this movie.</p>
+    //                 </div>
+    //             </div>
+    //             `;
+    //             searchResultCard.appendChild(result);
+    //         });
+
+    //     } catch (error) {
+    //         alert("There was an error fetching the data. Please try again later.");
+    //         console.error('Error fetching data:', error);
+    //     }
+    // });
 
 });

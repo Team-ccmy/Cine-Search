@@ -19,13 +19,11 @@
     <h1 class="movie-header">CineSearch</h1>
   </header>
 
-  <form id="searchForm" class="searchForm container">
+  <form action="/" class="searchForm container">
     <div class="row">
       <div class="col s12">
         <div class="input-group">
-          <input type="text" id="search-input" placeholder="Search your next movie...">
-          <!-- Search button -->
-          <button type="submit" id="btn-search">Buscar</button>
+          <input class="valign-wrapper" type="text" id="search-input" placeholder="Search your next movie...">
         </div>
         <!-- Genre Dropdown -->
         <select id="genre-filter">
@@ -57,6 +55,10 @@
           <option value="ko">Korean</option>
         </select>
       </div>
+      <div class="col s12 m4">
+        <!-- Search button -->
+        <button class="btn waves-effect waves-light" onclick="saveSearch()" type="submit" id="btn-search">Search</button>
+      </div>
     </div>
     </div>
   </form>
@@ -66,7 +68,7 @@
       <!-- Result List -->
       <div class="result">
         <h2>Search Result</h2>
-        <ul class="">
+        <ul id="searchList">
         </ul>
       </div>
       <!-- Bucket List -->
@@ -74,14 +76,12 @@
         <h2>Bucket List <i class="material-icons center-align">delete_sweep</i></h2>
         <ul class="">
         </ul>
-        <button id="clear-bucket">Clear Bucket</button>
       </div>
       <!-- Queue List -->
       <div class="queue">
         <h2>Queue List <i class="material-icons center-align">queue_play_next</i></h2>
         <ul class="">
         </ul>
-        <button id="clear-queue">Clear Queue</button>
       </div>
     </aside>
 
@@ -90,7 +90,7 @@
         <iframe width="853" height="480" src="//www.youtube.com/embed/Q8TXgCzxEnw?rel=0" frameborder="0"
           allowfullscreen></iframe>
       </div>
-      <div class="results" id="cardsContainer">
+      <div class="results card-container" id="cardsContainer">
         <div class="search-result"></div>
         <div class="searchResultCard"></div>
       </div>

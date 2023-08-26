@@ -1,8 +1,7 @@
 :root {
     --main-color: #0E2732;
     --light-color: #ECFCFF;
-    --button-primary-color: #00A3ED;
-    --button-secondary-color: #2CE8B2;
+    --button-color: #00A3ED;
 }
 
 body {
@@ -14,144 +13,102 @@ body {
 
 header {
     color: var(--main-color);
-    padding: 25px 0;
-    text-align: center;
-    /* center the header text */
+    padding-top: 25px 0;
 }
 
 form {
     padding-top: 75px;
-    text-align: center;
-    /* center the form */
 }
 
 .input-group {
-    display: flex;
-    justify-content: center;
-    /* center items horizontally */
-    border: 1px solid #ccc;
+    display: flex; 
+    border: 1px solid #ccc; 
     border-radius: 25px;
 }
 
 #search-input {
-    flex-grow: 1;
+    width: 100%;
     height: 46px;
     font-size: 1.1em;
-    color: rgba(0, 0, 0, .5);
-    border: none;
-    border-radius: 25px 0 0 25px;
-    /* round left corners only */
-    padding: 0 20px;
+    color: rgba(0,0,0,.5);
+    border: 0;
+    border-radius: 30px;
+    padding:0 20px;
 }
 
 #btn-search {
     height: 55px;
     width: 120px;
-    border: none;
-    background: var(--button-primary-color);
-    border-radius: 25px 25px;
-    /* round right corners only */
-    color: var(--light-color);
+    border: 0;
+    background: var(--button-color);
+    border-radius: 30px;
+    color: #fff;
+    align-content: center;
 }
 
 #btn-search:hover {
-    background-color: var(--button-secondary-color);
-    color: var(--light-color);
+    background-color:rgb(0, 163, 237); 
+    color: black;
     font-weight: bold;
 }
 
-#clear-bucket,
-#clear-queue {
-    height: 55px;
-    width: 120px;
-    border: none;
-    background: var(--button-primary-color);
-    border-radius: 25px 25px;
-    /* round right corners only */
-    color: #fff;
-}
-
-#clear-bucket:hover,
-#clear-queue:hover {
-    background-color: var(--button-secondary-color);
-    color: var(--light-color);
-    font-weight: bold;
-}
-
-main {
-    padding: 0 25px;
+/*
+.play{
     display: flex;
-    /* create a flex layout for main content */
-    justify-content: space-between;
-    /* space between aside and section */
+    flex-wrap: wrap;
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: auto;
+    background: 0 0;
+    border: 0;
+    box-shadow: none;
 }
 
-.result h2,
-.bucket h2,
-.queue h2 {
+.video{
+    display: flex;
+    flex-wrap: wrap;
+    width: 300px;
+    min-width: 300px;
+    max-width: 300px;
+    height: auto;
+    background: 0 0;
+    border: 0;
+    box-shadow: none; 
+}
+*/
+
+main{
+    padding: 0 25px;
+}
+.result h2, .bucket h2, .queue h2{
     color: var(--button-color);
     font-size: 24px;
 }
 
+.results.card-container {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+}
+
+.card {
+    flex-shrink: 0 !important;
+    width: 250px !important;
+    text-align: center !important;
+}
+
+.card-reveal {
+    opacity: .85;
+}
+
 .search-result {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.searchResultCard{
+    gap: 20px;
     display: flex;
-    flex-wrap: row;
-    /* Ensures the items are in a row */
+    flex-wrap: flex;
     overflow-x: scroll;
-    /* If items exceed the width, allow scrolling */
-    gap: 15px;
-    /* Space between items, can be adjusted */
-    width: 100%;
-    /* Full width of parent container */
-    align-items: flex-start;
-    /* Items are aligned to the start of the container, prevents stretching */
-}
-
-.movie-card {
-    flex: 0 0 150px;
-    /* Do not grow, do not shrink, base size */
-    width: 150px;
-    /* Width of each card */
-    text-align: center;
-}
-
-.movie-card img {
-    max-width: 100%;
-    /* Ensure images are not larger than the card */
-    height: auto;
-}
-
-.add-to-bucket,
-.add-to-queue {
-    margin-top: 10px;
-    /* Add a little space above the button */
-    background-color: transparent;
-    /* Using the primary color from your variables */
-    border: none;
-    /* Remove any default borders */
-    color: var(--button-primary-color);
-    /* Light text color for contrast */
-    padding: 5px 15px;
-    /* Some padding to make it look nice */
-    border-radius: 15px;
-    /* Round the corners a bit */
-    cursor: pointer;
-    /* Change cursor to pointer to indicate it's clickable */
-    transition: background-color 0.3s ease;
-    /* Smooth transition for hover effects */
-}
-
-.add-to-bucket:hover,
-.add-to-queue:hover {
-    background-color: transparent;
-    /* Change color on hover */
-    color: var(--button-secondary-color);
-}
-
-.add-to-bucket i,
-.add-to-queue i {
-    font-size: 30px;
-    /* Adjust the font size of the icons */
-    vertical-align: middle;
-    /* Align it vertically in the middle */
 }

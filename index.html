@@ -17,6 +17,10 @@
 <body>
   <header class="container center-align">
     <h1 class="movie-header">CineSearch</h1>
+    <div class="toggle-switch">
+      <input type="checkbox" id="toggle" class="toggle-checkbox">
+      <label for="toggle" class="toggle-label"></label>
+    </div>
   </header>
 
   <form action="/" class="searchForm container">
@@ -24,6 +28,8 @@
       <div class="col s12">
         <div class="input-group">
           <input class="valign-wrapper" type="text" id="search-input" placeholder="Search your next movie...">
+          <!-- Search button -->
+          <button id="btn-search">Search</button>
         </div>
         <!-- Genre Dropdown -->
         <select id="genre-filter">
@@ -55,36 +61,29 @@
           <option value="ko">Korean</option>
         </select>
       </div>
-      <div class="col s12 m4">
-        <!-- Search button -->
-        <button class="btn waves-effect waves-light" onclick="saveSearch()" type="submit" id="btn-search">Search</button>
-      </div>
     </div>
     </div>
   </form>
 
   <main class="row">
     <aside class="col s12 m4 l3">
-      <!-- Result List -->
-      <div class="result">
+      <section class="result">
         <h2>Search Result</h2>
-        <ul id="searchList">
-        </ul>
-      </div>
-      <!-- Bucket List -->
-      <div class="bucket">
+        <ul id="searchHistory"></ul>
+        <button id="clear-result">Clear Search</button>
+      </section>
+
+      <section class="bucket">
         <h2>Bucket List <i class="material-icons center-align">delete_sweep</i></h2>
-        <ul class="">
-        </ul>
+        <ul id="bucketList"></ul>
         <button id="clear-bucket">Clear Bucket</button>
-      </div>
-      <!-- Queue List -->
-      <div class="queue">
+      </section>
+
+      <section class="queue">
         <h2>Queue List <i class="material-icons center-align">queue_play_next</i></h2>
-        <ul class="">
-        </ul>
+        <ul id="queueList"></ul>
         <button id="clear-queue">Clear Queue</button>
-      </div>
+      </section>
     </aside>
 
     <section class="col s12 m8 l9">

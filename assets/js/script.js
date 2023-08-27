@@ -98,13 +98,21 @@ document.addEventListener("DOMContentLoaded", function () {
                     var result = document.createElement("div");
                     result.classList.add("result");
                     result.innerHTML =
-                        '<div class="card">' + '<div class="card-image waves-effect waves-block waves-light">' +
-                        '<img class="activator" src="https://image.tmdb.org/t/p/w185/' + poster_path + '" alt="' + title + ' poster">' + "</div>" +
-                        '<div class="card-content">' + '<span class="card-title activator grey-text text-darken-4 movieTitle">' + title +
-                        "</span>" + '<i class="material-icons center-align"><a href="#">delete_sweep</a></i>' +
-                        '<i class="material-icons center-align"><a href="#">queue_play_next</a></i>' + "</div>" +
-                        '<div class="card-reveal">' + '<span class="card-title grey-text text-darken-4">' + title +
-                        '<i class="material-icons right">close</i></span>' + "<p>" + description + "</p>" + "</div>" + "</div>";
+                        '<div class="card">' + 
+                            '<div class="card-image waves-effect waves-block waves-light">' +
+                                '<img class="activator" src="https://image.tmdb.org/t/p/w185/' + poster_path + '" alt="' + title + ' poster">' + 
+                            "</div>" +
+                            '<div class="card-content">' +
+                                '<span class="card-title activator grey-text text-darken-4 movieTitle">' + title + "</span>" + 
+                                '<i class="material-icons center-align"><a href="#">delete_sweep</a></i>' +
+                                '<i class="material-icons center-align"><a href="#">queue_play_next</a></i>' + 
+                            "</div>" +
+                            '<div class="card-reveal">' +
+                                '<span class="card-title grey-text text-darken-4">' + title +
+                                '<i class="material-icons right">close</i></span>' + 
+                                "<p>" + description + "</p>" +
+                            "</div>" +
+                        "</div>";
                     searchResultCard.appendChild(result);
                 });
             })

@@ -295,13 +295,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Replace with your actual API keys
         var tmdbApiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-        var youtubeApiKey = 'AIzaSyCQ84AAESxpn_eMziNq3xc5L1jng4849GM';
+        var youtubeApiKey = 'AIzaSyAn_d7ue2ey-H-g9wDmhVagSwxiCWuTzM0';
 
         // Fetch movie titles from the TMDB API
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=` + tmdbApiKey + `&query=` + query)
             .then(function (response) { return response.json(); })
             .then(function (data) {
-                const movieTitle = data.results[0].title;
+                var movieTitle = data.results[0].title;
                 console.log('Movie Title: ', movieTitle);
                 console.log(data);
                 // Use the movie title to search for trailers on YouTube
@@ -311,7 +311,7 @@ document.addEventListener("DOMContentLoaded", function () {
             .then(function (data) {
                 // Assuming we're interested in the first video
                 if (data.items.length > 0) {
-                    const videoId = data.items[0].id.videoId;
+                    var videoId = data.items[0].id.videoId;
                     console.log('YouTube Video ID: ', videoId);
                     // Clear the video container before adding the new trailer
                     videoContainer.innerHTML = '';

@@ -126,6 +126,9 @@ main {
     text-align: center;
 }
 
+.result .card {
+    height: 600px;
+}
 aside section {
     padding: 25px 0;
 }

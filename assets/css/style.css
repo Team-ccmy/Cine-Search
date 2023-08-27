@@ -33,7 +33,6 @@
     width: 100%;
     height: 46px;
     font-size: 1.1em;
-    color: rgba(0, 0, 0, 0.5);
     border: 0;
     border-radius: 30px;
     padding: 0 20px;
@@ -93,7 +92,10 @@
     font-weight: bold;
     opacity: 0.6;
 }
-  
+ 
+iframe{
+    width: 100%;
+  }
   /*
   .play{
       display: flex;
@@ -119,7 +121,10 @@
       box-shadow: none; 
   }
   */
-  
+  li {
+    text-align: center;
+}
+
   main {
     padding: 0 25px;
   }
@@ -166,11 +171,12 @@
     opacity: 0.85;
   }
   
+  /*
   .search-result {
     flex-direction: row;
     flex-wrap: wrap;
   }
-  
+  */
   .searchResultCard {
     gap: 20px;
     display: flex;
@@ -271,6 +277,25 @@
   .toggle-checkbox:checked + .toggle-label::before {
     transform: translateX(30px);
   }
+
+[data-theme="dark"] .glowHeader{
+    font-size: 24px;
+    text-shadow: 0 0 10px #00a3ed, 0 0 20px #00a3ed, 0 0 30px #00a3ed, 0 0 40px #00a3ed, 0 0 50px #00a3ed, 0 0 60px #00a3ed, 0 0 70px #00a3ed;
+    
+  }
+
+  [data-theme="dark"] .glowItem{
+    color: white;
+    font-size: 16px;
+    text-shadow: 0 0 10px #00a3ed, 0 0 20px #00a3ed, 0 0 30px #00a3ed, 0 0 40px #00a3ed, 0 0 50px #00a3ed, 0 0 60px #00a3ed, 0 0 70px #00a3ed;
+    
+  }
+
+  [data-theme="dark"] .glowItemTwo{
+    background: linear-gradient(180deg, hsla(217, 93%, 5%, 1) 0%, hsla(0, 0%, 0%, 1) 100%);
+    color: white;
+    font-size: 16px;
+    text-shadow: 0 0 10px #00a3ed, 0 0 20px #00a3ed, 0 0 30px #00a3ed, 0 0 40px #00a3ed, 0 0 50px #00a3ed, 0 0 60px #00a3ed, 0 0 70px #00a3ed;}
 
   @keyframes glow {
     from {

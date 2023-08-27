@@ -98,20 +98,20 @@ document.addEventListener("DOMContentLoaded", function () {
                     var result = document.createElement("div");
                     result.classList.add("result");
                     result.innerHTML =
-                        '<div class="card">' + 
-                            '<div class="card-image waves-effect waves-block waves-light">' +
-                                '<img class="activator" src="https://image.tmdb.org/t/p/w185/' + poster_path + '" alt="' + title + ' poster">' + 
-                            "</div>" +
-                            '<div class="card-content">' +
-                                '<span class="card-title activator grey-text text-darken-4 movieTitle">' + title + "</span>" + 
-                                '<i class="material-icons center-align"><a href="#">delete_sweep</a></i>' +
-                                '<i class="material-icons center-align"><a href="#">queue_play_next</a></i>' + 
-                            "</div>" +
-                            '<div class="card-reveal">' +
-                                '<span class="card-title grey-text text-darken-4">' + title +
-                                '<i class="material-icons right">close</i></span>' + 
-                                "<p>" + description + "</p>" +
-                            "</div>" +
+                        '<div class="card">' +
+                        '<div class="card-image waves-effect waves-block waves-light">' +
+                        '<img class="activator" src="https://image.tmdb.org/t/p/w185/' + poster_path + '" alt="' + title + ' poster">' +
+                        "</div>" +
+                        '<div class="card-content">' +
+                        '<span class="card-title activator grey-text text-darken-4 movieTitle">' + title + "</span>" +
+                        '<i class="material-icons center-align"><a href="#">delete_sweep</a></i>' +
+                        '<i class="material-icons center-align"><a href="#">queue_play_next</a></i>' +
+                        "</div>" +
+                        '<div class="card-reveal">' +
+                        '<span class="card-title grey-text text-darken-4">' + title +
+                        '<i class="material-icons right">close</i></span>' +
+                        "<p>" + description + "</p>" +
+                        "</div>" +
                         "</div>";
                     searchResultCard.appendChild(result);
                 });
@@ -176,6 +176,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         fetchMovies(apiUrl);
     });
+
+    // Result filter button
+    document.getElementById('reset-filters').addEventListener('click', function () {
+        var genreFilter = document.getElementById('genre-filter');
+        genreFilter.selectedIndex = 0;
+        M.FormSelect.init(genreFilter); // Reinitialize materialize select
+
+        var ratingFilter = document.getElementById('rating-filter');
+        ratingFilter.selectedIndex = 0;
+        M.FormSelect.init(ratingFilter); // Reinitialize materialize select
+
+        var yearFilter = document.getElementById('year-filter');
+        yearFilter.selectedIndex = 0;
+        M.FormSelect.init(yearFilter); // Reinitialize materialize select
+
+        var languageFilter = document.getElementById('language-filter');
+        languageFilter.selectedIndex = 0;
+        M.FormSelect.init(languageFilter); // Reinitialize materialize select
+    });
+
 
     // Function to load movies from local storage
     function loadMoviesFromLocalStorage(listSelector) {
@@ -280,15 +300,15 @@ document.addEventListener("DOMContentLoaded", function () {
         // Fetch movie titles from the TMDB API
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=` + tmdbApiKey + `&query=` + query)
             .then(function (response) { return response.json(); })
-            .then(function(data) {
+            .then(function (data) {
                 const movieTitle = data.results[0].title;
                 console.log('Movie Title: ', movieTitle);
                 console.log(data);
                 // Use the movie title to search for trailers on YouTube
-                return fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${encodeURIComponent(movieTitle + ' trailer')}&key=${youtubeApiKey}`);
+                return fetch("https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=" + encodeURIComponent(movieTitle + ' trailer') + "&key=" + youtubeApiKey);
             })
-            .then(function(response) { return response.json(); })
-            .then(function(data) {
+            .then(function (response) { return response.json(); })
+            .then(function (data) {
                 // Assuming we're interested in the first video
                 if (data.items.length > 0) {
                     const videoId = data.items[0].id.videoId;
@@ -298,7 +318,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     var iframe = document.createElement('iframe');
                     iframe.width = '660';
                     iframe.height = '415';
-                    iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                    iframe.src = "https://www.youtube.com/embed/" + videoId;
                     iframe.title = 'YouTube video player';
                     iframe.frameborder = '0';
                     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
@@ -310,7 +330,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     console.log('No videos found for this movie.');
                 }
             })
-            .catch(error => console.error('Error: ', error));
+            .catch(function (error) {
+                console.error('Error: ', error);
+            });
+
     });
 
 

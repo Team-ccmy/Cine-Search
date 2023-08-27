@@ -77,7 +77,8 @@ form {
 
 #clear-bucket,
 #clear-queue,
-#clear-result {
+#clear-result,
+#reset-filters {
     height: 55px;
     width: 120px;
     border: none;

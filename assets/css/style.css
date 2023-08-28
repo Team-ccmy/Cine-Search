@@ -233,7 +233,7 @@ aside section {
 
 .card .card-content .card-title {
   overflow: scroll;
-  margin-bottom: 25px !important;
+  margin-bottom: 115px !important;
 }
 
 a {
@@ -364,6 +364,10 @@ a {
 [data-theme="dark"] #reset-filters {
   background: var(--button-secondary);
   border: 1px solid var(--button-secondary);
+}
+
+[data-theme=“dark”] #search-input {
+  color: white;
 }
 
 [data-theme="dark"] #btn-search {

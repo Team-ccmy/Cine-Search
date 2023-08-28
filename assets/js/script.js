@@ -1,5 +1,13 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    document.getElementById("btn-search").addEventListener("click", function() {
+        // Get all elements with class "hidden-section"
+        var sections = document.querySelectorAll(".hidden-section");
+        for (var i = 0; i < sections.length; i++) {
+            sections[i].style.display = "block";
+        }
+    });
+
     document.getElementById("toggle").addEventListener("change", function () {
         if (this.checked) {
             document.body.setAttribute("data-theme", "dark");

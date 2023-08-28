@@ -28,17 +28,18 @@
     </div>
   </header>
 
-  <!-- Movie search form -->
+  <!-- Movie search form with input and dropdown filters -->
   <form action="/" class="searchForm container">
     <div class="row">
       <div class="col s12">
+
+        <!-- Search button -->
         <div class="input-group">
           <input class="valign-wrapper" type="text" id="search-input" placeholder="Search your next movie...">
-          <!-- Search button -->
           <button id="btn-search"><span>Search</span></button>
         </div>
 
-        <!-- Dropdown filters for search -->
+        <!-- Dropdown filters -->
         <div id="drop">
           <!-- Genre Dropdown -->
           <div class="dropdown">
@@ -79,6 +80,8 @@
               <option value="ko">Korean</option>
             </select>
           </div>
+
+          <!-- Button to reset all filters -->
           <button id="reset-filters" type="button">Reset Filters</button>
         </div>
       </div>
@@ -86,8 +89,9 @@
     </div>
   </form>
 
+  <!-- Main content area -->
   <div class="hidden-section">
-    <!-- Main content: Search results, bucket list, and queue list -->
+    <!-- Section containing search results, bucket list, and queue list -->
     <main class="row">
       <!-- Sidebar: Lists for search history, bucket, and queue -->
       <aside class="col s12 m4 l3">
@@ -114,13 +118,10 @@
         </section>
       </aside>
 
-      <!-- Main video and card container -->
+      <!-- Main content displaying video and movie details -->
       <section class="col s12 m8 l9">
         <!-- Embedded video -->
-        <div id="video-container">
-          <!------   --------->
-
-        </div>
+        <div id="video-container"></div>
         <!-- Container for movie cards -->
         <div class="results card-container" id="cardsContainer">
           <div class="search-result"></div>
@@ -128,6 +129,8 @@
         </div>
       </section>
     </main>
+
+    <!-- Container for movie trailers -->
     <div class="movie-list-container">
       <h1 class="movie-list-title">
         <div id="icon">
@@ -184,13 +187,14 @@
       </div>
     </div>
 
+    <!-- Container for movie trailers -->
     <div class="movie-list-container">
       <h1 class="movie-list-title">
         <div id="icon">
           <div class="body-letter"></div>
           <div class="body-letter"></div>
           <div class="body-letter"></div>
-        </div> Tailers
+        </div> Trailers
       </h1>
       <div class="movie-list-wrapper">
         <div class="movie-list">

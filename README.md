@@ -4,7 +4,7 @@ This is an app that enables users to search movies by title or filter out a list
 view trailers and description, and add movies to a bucket list.
 
 ## Link to Deployed Application
-<a href="">CineSearch</a>
+<a href="https://team-ccmy.github.io/Cine-Search/">CineSearch</a>
 
 ## Description
 - This web application is designed to simplify the movie discovery process for users.

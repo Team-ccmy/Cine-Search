@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.getElementById("btn-search").addEventListener("click", function() {
+    document.getElementById("btn-search").addEventListener("click", function () {
         // Get all elements with class "hidden-section"
         var sections = document.querySelectorAll(".hidden-section");
         for (var i = 0; i < sections.length; i++) {
@@ -350,39 +350,40 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // function for list of trailers' button arrow
 
-const arrows = document.querySelectorAll(".arrow");
-const movieLists = document.querySelectorAll(".movie-list");
+var arrows = document.querySelectorAll(".arrow");
+var movieLists = document.querySelectorAll(".movie-list");
 
-arrows.forEach((arrow, i) => {
-  const itemNumber = movieLists[i].querySelectorAll("iframe").length;
-  let clickCounter = 0;
-  arrow.addEventListener("click", () => {
-    const ratio = Math.floor(window.innerWidth / 270);
-    clickCounter++;
-    if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
-      movieLists[i].style.transform = `translateX(${
-        movieLists[i].computedStyleMap().get("transform")[0].x.value - 300
-      }px)`;
-    } else {
-      movieLists[i].style.transform = "translateX(0)";
-      clickCounter = 0;
-    }
-  });
+for (var i = 0; i < arrows.length; i++) {
+    (function (i) {
+        var itemNumber = movieLists[i].querySelectorAll("iframe").length;
+        var clickCounter = 0;
+        arrows[i].addEventListener("click", function () {
+            var ratio = Math.floor(window.innerWidth / 270);
+            clickCounter++;
+            if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
+                movieLists[i].style.transform = "translateX(" + (movieLists[i].computedStyleMap().get("transform")[0].x.value - 300) + "px)";
+            } else {
+                movieLists[i].style.transform = "translateX(0)";
+                clickCounter = 0;
+            }
+        });
+    })(i);
+    console.log(Math.floor(window.innerWidth / 270));
+}
 
-  console.log(Math.floor(window.innerWidth / 270));
-});
 
 
 //TOGGLE
 
-const ball = document.querySelector(".toggle-ball");
-const items = document.querySelectorAll(
-  ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
+var ball = document.querySelector(".toggle-switch");
+var items = document.querySelectorAll(
+    ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
 );
 
-ball.addEventListener("click", () => {
-  items.forEach((item) => {
-    item.classList.toggle("active");
-  });
-  ball.classList.toggle("active");
+ball.addEventListener("click", function () {
+    for (var i = 0; i < items.length; i++) {
+        items[i].classList.toggle("active");
+    }
+    ball.classList.toggle("active");
 });
+

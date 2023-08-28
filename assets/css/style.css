@@ -394,6 +394,10 @@ a {
     border: 1px solid var(--button-secondary);
 }
 
+[data-theme="dark"] #search-input {
+    color: white;
+}
+
 [data-theme="dark"] .select-wrapper input.select-dropdown {
     color: var(--button-primary);
 }

@@ -1,16 +1,22 @@
+// This event listener ensures that the script runs after the entire document is fully loaded.
 document.addEventListener("DOMContentLoaded", function () {
 
+    // Add click event listener to the button with the ID "btn-search"
     document.getElementById("btn-search").addEventListener("click", function () {
         // Get all elements with class "hidden-section"
         var sections = document.querySelectorAll(".hidden-section");
+        // Loop through all elements with the "hidden-section" class and make them visible
         for (var i = 0; i < sections.length; i++) {
             sections[i].style.display = "block";
         }
     });
 
+    // Add change event listener to the toggle switch (for theme switching) with the ID "toggle"
     document.getElementById("toggle").addEventListener("change", function () {
+        // If the toggle switch is checked, switch to dark theme
         if (this.checked) {
             document.body.setAttribute("data-theme", "dark");
+            // Save the user's theme preference in local storage
             localStorage.setItem("theme", "dark");
         } else {
             document.body.setAttribute("data-theme", "light");
@@ -23,16 +29,18 @@ document.addEventListener("DOMContentLoaded", function () {
         var savedTheme = localStorage.getItem("theme") || "light";
         document.body.setAttribute("data-theme", savedTheme);
         var toggleCheckbox = document.getElementById("toggle");
+
+        // If the saved theme is "dark", check the toggle switch to reflect the user's preference
         if (savedTheme === "dark") {
             toggleCheckbox.checked = true;
         }
     });
 
+    // Get the search form and its input, as well as the container for search results and video
     var searchForm = document.querySelector(".searchForm");
     var queryInput = searchForm.querySelector("input");
     var searchResultCard = document.querySelector(".searchResultCard");
     var videoContainer = document.getElementById('video-container');
-    var isVideoExpanded = false;
 
     // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
@@ -44,14 +52,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(function (data) {
+                // Get genre data from the response
                 var genres = data.genres;
                 var genreFilter = document.getElementById("genre-filter");
+                // Fill the dropdown with the genre data
                 genres.forEach(function (genre) {
                     var option = document.createElement("option");
                     option.value = genre.id;
                     option.textContent = genre.name;
                     genreFilter.appendChild(option);
                 });
+                // Initialize form select (assuming Materialize framework is in use)
                 var selectItems = document.querySelectorAll("select");
                 M.FormSelect.init(selectItems);
             })
@@ -65,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var currentYear = new Date().getFullYear();
         var earliestYear = 1950;
         var yearFilter = document.getElementById("year-filter");
+        // Create an option for each year and append to the dropdown
         for (let i = currentYear; i >= earliestYear; i--) {
             var option = document.createElement("option");
             option.value = i;
@@ -73,9 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Call the functions to load genres and years when the script runs
     loadGenres();
     loadYears();
 
+    // Fetch and display movies from search history
     var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     if (searchHistory.length > 0) {
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
@@ -84,27 +98,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     displaySearchHistory();
 
+    // Add click event listener to the search button to fetch movies based on user's search input
     document.getElementById("btn-search").addEventListener("click", function () {
+        // Get the user's search query
         var query = document.getElementById("search-input").value.trim();
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
         var apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + query;
+        // Call the function to fetch and display movies based on the search query
         fetchMovies(apiUrl);
     });
 
-    // Separate function to handle fetching movies
+    // Function to fetch movie data from the API based on the provided URL
     function fetchMovies(apiUrl) {
         fetch(apiUrl)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
+                // Extract movie results from API response
                 var movies = data.results;
+                // Clear any previous search results
                 searchResultCard.innerHTML = "";
+                // Save current search input value to search history
                 saveToSearchHistory(document.getElementById("search-input").value.trim());
+                // Iterate over movies and display them
                 movies.forEach(function (movie) {
                     var title = movie.title, description = movie.overview, poster_path = movie.poster_path;
                     var result = document.createElement("div");
                     result.classList.add("result");
+                    // Construct movie card with image, title, and description
                     result.innerHTML =
                         '<div class="card">' +
                         '<div class="card-image waves-effect waves-block waves-light">' +
@@ -121,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "<p>" + description + "</p>" +
                         "</div>" +
                         "</div>";
+                    // Append the movie card to the results container
                     searchResultCard.appendChild(result);
                 });
             })
@@ -129,24 +152,31 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    // Save a movie title to local storage as part of search history
     function saveToSearchHistory(movieTitle) {
+        // Retrieve current search history or initialize as an empty array if it doesn't exist
         var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+        // Avoid adding duplicate entries to search history
         if (searchHistory.includes(movieTitle)) return;
+        // Add movie title to history and save back to local storage
         searchHistory.push(movieTitle);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+        // Update displayed search history
         displaySearchHistory();
     }
 
-    // Display the search history from local storage as a list of clickable buttons
+    // Function to render the search history from local storage as clickable list items
     function displaySearchHistory() {
         var historyList = document.getElementById("searchHistory");
         historyList.innerHTML = "";
         var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+        // Iterate over each saved search query and create a clickable list item for it
         for (var i = 0; i < searchHistory.length; i++) {
             (function (movie) {
                 var searchButton = document.createElement("li");
                 searchButton.textContent = movie;
                 searchButton.className = "history-item";
+                // When clicking on a search history item, fetch movies for that query again
                 searchButton.addEventListener("click", function () {
                     var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
                     var apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + movie;
@@ -159,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener for the form submission with both query and filters
     searchForm.addEventListener("submit", function (event) {
+        // Base URL for movie search
         event.preventDefault();
         var query = queryInput.value.trim();
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
@@ -182,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (yearFilter) apiUrl += "&primary_release_year=" + yearFilter;
         if (languageFilter) apiUrl += "&with_original_language=" + languageFilter;
 
+        // Call the fetchMovies function to retrieve and display movies based on filters
         fetchMovies(apiUrl);
     });
 

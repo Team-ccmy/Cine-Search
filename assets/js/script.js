@@ -239,20 +239,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to load movies from local storage
     function loadMoviesFromLocalStorage(listSelector) {
+        // Convert list selector into a storage key (e.g. ".bucket ul" -> "bucketul")
         var storageKey = listSelector.replace(" ", "").replace(".", "");
+        // Get the saved movies for the specified list from local storage
         var savedMovies = JSON.parse(localStorage.getItem(storageKey) || "[]");
         savedMovies.forEach(function (movie) {
+            // Add each saved movie to the list in the DOM
             addMovieToList(movie, listSelector);
         });
     }
 
+    // Load movies into bucket and queue lists
     loadMoviesFromLocalStorage(".bucket ul");
     loadMoviesFromLocalStorage(".queue ul");
 
     // Function to add movie to a specific list
     function addMovieToList(movieTitle, listSelector) {
         var list = document.querySelector(listSelector);
-        // Check for duplicates
+        // Check if the movie is already in the list to avoid duplicates
         var listItemExists = Array.from(list.children).some(function (li) {
             return li.textContent === movieTitle;
         });
@@ -260,9 +264,11 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Movie: " + movieTitle + " already exists in the list.");
             return;
         }
+        // Create a new list item for the movie
         var listItem = document.createElement("li");
         listItem.textContent = movieTitle;
         list.appendChild(listItem);
+        // Save the movie to local storage
         var storageKey = listSelector.replace(" ", "").replace(".", "");
         var currentList = JSON.parse(localStorage.getItem(storageKey) || "[]");
         currentList.push(movieTitle);
@@ -273,9 +279,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleIconClick(event) {
         var target = event.target;
         console.log("Clicked on:", target.textContent);
+        // Ensure we're handling the correct elements
         if (target.tagName !== "A") {
             target = target.parentElement;
         }
+        // Check which icon was clicked on (delete or queue)
         if (!["delete_sweep", "queue_play_next"].includes(target.textContent))
             return;
 
@@ -283,6 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Parent card:", card);
         if (!card) return;
 
+        // Get the title of the movie from the card
         var titleElement = card.querySelector(".movieTitle");
         console.log("Title element:", titleElement);
         if (!titleElement) return;
@@ -290,6 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var movieTitle = titleElement.textContent;
         console.log("Movie title:", movieTitle);
 
+        // Perform action based on which icon was clicked
         if (target.textContent === "delete_sweep") {
             addMovieToList(movieTitle, ".bucket ul");
         } else if (target.textContent === "queue_play_next") {
@@ -300,6 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("click", handleIconClick);
 
+    // Listen for clicks on the document to handle movie action icons
     function clearList(listSelector, storageKey) {
         // Clear the list from the DOM
         document.querySelector(listSelector).innerHTML = "";
@@ -311,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Usage:
+    // Setup event listeners to clear specific lists when buttons are clicked
     document.getElementById("clear-bucket").addEventListener("click", function (event) {
         clearList(".bucket ul", "bucketul");
         event.preventDefault(); // Prevent any default behavior
@@ -327,13 +338,11 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault(); // Prevent any default behavior
     });
 
-    ///////////////////////////////////////////////////////////////////
+    // Handle search form submission to fetch movie trailers from YouTube
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
 
         var query = queryInput.value
-
-        // Replace with your actual API keys
         var tmdbApiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
         var youtubeApiKey = 'AIzaSyAn_d7ue2ey-H-g9wDmhVagSwxiCWuTzM0';
 
@@ -380,19 +389,23 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// function for list of trailers' button arrow
-
+// Handle scrolling of the trailers' list when arrow buttons are clicked
 var arrows = document.querySelectorAll(".arrow");
 var movieLists = document.querySelectorAll(".movie-list");
 
+// Iterate over each arrow
 for (var i = 0; i < arrows.length; i++) {
+    // Create a closure, keeping the value of `i`
     (function (i) {
         var itemNumber = movieLists[i].querySelectorAll("iframe").length;
+        // Counter to keep track of how many times the arrow has been clicked
         var clickCounter = 0;
         arrows[i].addEventListener("click", function () {
             var ratio = Math.floor(window.innerWidth / 270);
             clickCounter++;
+            // Check if there's enough room to scroll in the movie list
             if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
+                // Scroll the movie list to the left from its current position
                 movieLists[i].style.transform = "translateX(" + (movieLists[i].computedStyleMap().get("transform")[0].x.value - 300) + "px)";
             } else {
                 movieLists[i].style.transform = "translateX(0)";
@@ -405,14 +418,14 @@ for (var i = 0; i < arrows.length; i++) {
 
 
 
-//TOGGLE
-
+// Toggle the theme when toggle switch is clicked
 var ball = document.querySelector(".toggle-switch");
 var items = document.querySelectorAll(
     ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
 );
 
 ball.addEventListener("click", function () {
+    // Toggle active class on each item to switch its appearance
     for (var i = 0; i < items.length; i++) {
         items[i].classList.toggle("active");
     }

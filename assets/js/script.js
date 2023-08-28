@@ -1,16 +1,22 @@
+// This event listener ensures that the script runs after the entire document is fully loaded.
 document.addEventListener("DOMContentLoaded", function () {
 
-    document.getElementById("btn-search").addEventListener("click", function() {
+    // Add click event listener to the button with the ID "btn-search"
+    document.getElementById("btn-search").addEventListener("click", function () {
         // Get all elements with class "hidden-section"
         var sections = document.querySelectorAll(".hidden-section");
+        // Loop through all elements with the "hidden-section" class and make them visible
         for (var i = 0; i < sections.length; i++) {
             sections[i].style.display = "block";
         }
     });
 
+    // Add change event listener to the toggle switch (for theme switching) with the ID "toggle"
     document.getElementById("toggle").addEventListener("change", function () {
+        // If the toggle switch is checked, switch to dark theme
         if (this.checked) {
             document.body.setAttribute("data-theme", "dark");
+            // Save the user's theme preference in local storage
             localStorage.setItem("theme", "dark");
         } else {
             document.body.setAttribute("data-theme", "light");
@@ -23,16 +29,18 @@ document.addEventListener("DOMContentLoaded", function () {
         var savedTheme = localStorage.getItem("theme") || "light";
         document.body.setAttribute("data-theme", savedTheme);
         var toggleCheckbox = document.getElementById("toggle");
+
+        // If the saved theme is "dark", check the toggle switch to reflect the user's preference
         if (savedTheme === "dark") {
             toggleCheckbox.checked = true;
         }
     });
 
+    // Get the search form and its input, as well as the container for search results and video
     var searchForm = document.querySelector(".searchForm");
     var queryInput = searchForm.querySelector("input");
     var searchResultCard = document.querySelector(".searchResultCard");
     var videoContainer = document.getElementById('video-container');
-    var isVideoExpanded = false;
 
     // Load movie genres from the API and populate the genre dropdown
     function loadGenres() {
@@ -44,14 +52,17 @@ document.addEventListener("DOMContentLoaded", function () {
                 return response.json();
             })
             .then(function (data) {
+                // Get genre data from the response
                 var genres = data.genres;
                 var genreFilter = document.getElementById("genre-filter");
+                // Fill the dropdown with the genre data
                 genres.forEach(function (genre) {
                     var option = document.createElement("option");
                     option.value = genre.id;
                     option.textContent = genre.name;
                     genreFilter.appendChild(option);
                 });
+                // Initialize form select (assuming Materialize framework is in use)
                 var selectItems = document.querySelectorAll("select");
                 M.FormSelect.init(selectItems);
             })
@@ -65,6 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var currentYear = new Date().getFullYear();
         var earliestYear = 1950;
         var yearFilter = document.getElementById("year-filter");
+        // Create an option for each year and append to the dropdown
         for (let i = currentYear; i >= earliestYear; i--) {
             var option = document.createElement("option");
             option.value = i;
@@ -73,9 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // Call the functions to load genres and years when the script runs
     loadGenres();
     loadYears();
 
+    // Fetch and display movies from search history
     var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
     if (searchHistory.length > 0) {
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
@@ -84,27 +98,35 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     displaySearchHistory();
 
+    // Add click event listener to the search button to fetch movies based on user's search input
     document.getElementById("btn-search").addEventListener("click", function () {
+        // Get the user's search query
         var query = document.getElementById("search-input").value.trim();
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
         var apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + query;
+        // Call the function to fetch and display movies based on the search query
         fetchMovies(apiUrl);
     });
 
-    // Separate function to handle fetching movies
+    // Function to fetch movie data from the API based on the provided URL
     function fetchMovies(apiUrl) {
         fetch(apiUrl)
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
+                // Extract movie results from API response
                 var movies = data.results;
+                // Clear any previous search results
                 searchResultCard.innerHTML = "";
+                // Save current search input value to search history
                 saveToSearchHistory(document.getElementById("search-input").value.trim());
+                // Iterate over movies and display them
                 movies.forEach(function (movie) {
                     var title = movie.title, description = movie.overview, poster_path = movie.poster_path;
                     var result = document.createElement("div");
                     result.classList.add("result");
+                    // Construct movie card with image, title, and description
                     result.innerHTML =
                         '<div class="card">' +
                         '<div class="card-image waves-effect waves-block waves-light">' +
@@ -121,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         "<p>" + description + "</p>" +
                         "</div>" +
                         "</div>";
+                    // Append the movie card to the results container
                     searchResultCard.appendChild(result);
                 });
             })
@@ -129,24 +152,31 @@ document.addEventListener("DOMContentLoaded", function () {
             });
     }
 
+    // Save a movie title to local storage as part of search history
     function saveToSearchHistory(movieTitle) {
+        // Retrieve current search history or initialize as an empty array if it doesn't exist
         var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+        // Avoid adding duplicate entries to search history
         if (searchHistory.includes(movieTitle)) return;
+        // Add movie title to history and save back to local storage
         searchHistory.push(movieTitle);
         localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+        // Update displayed search history
         displaySearchHistory();
     }
 
-    // Display the search history from local storage as a list of clickable buttons
+    // Function to render the search history from local storage as clickable list items
     function displaySearchHistory() {
         var historyList = document.getElementById("searchHistory");
         historyList.innerHTML = "";
         var searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+        // Iterate over each saved search query and create a clickable list item for it
         for (var i = 0; i < searchHistory.length; i++) {
             (function (movie) {
                 var searchButton = document.createElement("li");
                 searchButton.textContent = movie;
                 searchButton.className = "history-item";
+                // When clicking on a search history item, fetch movies for that query again
                 searchButton.addEventListener("click", function () {
                     var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
                     var apiUrl = "https://api.themoviedb.org/3/search/movie?api_key=" + apiKey + "&query=" + movie;
@@ -159,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Event listener for the form submission with both query and filters
     searchForm.addEventListener("submit", function (event) {
+        // Base URL for movie search
         event.preventDefault();
         var query = queryInput.value.trim();
         var apiKey = "ff2971a496e122549ee3b82e1c22d1e9";
@@ -182,6 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (yearFilter) apiUrl += "&primary_release_year=" + yearFilter;
         if (languageFilter) apiUrl += "&with_original_language=" + languageFilter;
 
+        // Call the fetchMovies function to retrieve and display movies based on filters
         fetchMovies(apiUrl);
     });
 
@@ -207,20 +239,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to load movies from local storage
     function loadMoviesFromLocalStorage(listSelector) {
+        // Convert list selector into a storage key (e.g. ".bucket ul" -> "bucketul")
         var storageKey = listSelector.replace(" ", "").replace(".", "");
+        // Get the saved movies for the specified list from local storage
         var savedMovies = JSON.parse(localStorage.getItem(storageKey) || "[]");
         savedMovies.forEach(function (movie) {
+            // Add each saved movie to the list in the DOM
             addMovieToList(movie, listSelector);
         });
     }
 
+    // Load movies into bucket and queue lists
     loadMoviesFromLocalStorage(".bucket ul");
     loadMoviesFromLocalStorage(".queue ul");
 
     // Function to add movie to a specific list
     function addMovieToList(movieTitle, listSelector) {
         var list = document.querySelector(listSelector);
-        // Check for duplicates
+        // Check if the movie is already in the list to avoid duplicates
         var listItemExists = Array.from(list.children).some(function (li) {
             return li.textContent === movieTitle;
         });
@@ -228,9 +264,11 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log("Movie: " + movieTitle + " already exists in the list.");
             return;
         }
+        // Create a new list item for the movie
         var listItem = document.createElement("li");
         listItem.textContent = movieTitle;
         list.appendChild(listItem);
+        // Save the movie to local storage
         var storageKey = listSelector.replace(" ", "").replace(".", "");
         var currentList = JSON.parse(localStorage.getItem(storageKey) || "[]");
         currentList.push(movieTitle);
@@ -241,9 +279,11 @@ document.addEventListener("DOMContentLoaded", function () {
     function handleIconClick(event) {
         var target = event.target;
         console.log("Clicked on:", target.textContent);
+        // Ensure we're handling the correct elements
         if (target.tagName !== "A") {
             target = target.parentElement;
         }
+        // Check which icon was clicked on (delete or queue)
         if (!["delete_sweep", "queue_play_next"].includes(target.textContent))
             return;
 
@@ -251,6 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Parent card:", card);
         if (!card) return;
 
+        // Get the title of the movie from the card
         var titleElement = card.querySelector(".movieTitle");
         console.log("Title element:", titleElement);
         if (!titleElement) return;
@@ -258,6 +299,7 @@ document.addEventListener("DOMContentLoaded", function () {
         var movieTitle = titleElement.textContent;
         console.log("Movie title:", movieTitle);
 
+        // Perform action based on which icon was clicked
         if (target.textContent === "delete_sweep") {
             addMovieToList(movieTitle, ".bucket ul");
         } else if (target.textContent === "queue_play_next") {
@@ -268,6 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.addEventListener("click", handleIconClick);
 
+    // Listen for clicks on the document to handle movie action icons
     function clearList(listSelector, storageKey) {
         // Clear the list from the DOM
         document.querySelector(listSelector).innerHTML = "";
@@ -279,7 +322,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Usage:
+    // Setup event listeners to clear specific lists when buttons are clicked
     document.getElementById("clear-bucket").addEventListener("click", function (event) {
         clearList(".bucket ul", "bucketul");
         event.preventDefault(); // Prevent any default behavior
@@ -295,13 +338,11 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault(); // Prevent any default behavior
     });
 
-    ///////////////////////////////////////////////////////////////////
+    // Handle search form submission to fetch movie trailers from YouTube
     searchForm.addEventListener('submit', function (event) {
         event.preventDefault();
 
         var query = queryInput.value
-
-        // Replace with your actual API keys
         var tmdbApiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
         var youtubeApiKey = 'AIzaSyAn_d7ue2ey-H-g9wDmhVagSwxiCWuTzM0';
 
@@ -348,41 +389,46 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// function for list of trailers' button arrow
+// Handle scrolling of the trailers' list when arrow buttons are clicked
+var arrows = document.querySelectorAll(".arrow");
+var movieLists = document.querySelectorAll(".movie-list");
 
-const arrows = document.querySelectorAll(".arrow");
-const movieLists = document.querySelectorAll(".movie-list");
+// Iterate over each arrow
+for (var i = 0; i < arrows.length; i++) {
+    // Create a closure, keeping the value of `i`
+    (function (i) {
+        var itemNumber = movieLists[i].querySelectorAll("iframe").length;
+        // Counter to keep track of how many times the arrow has been clicked
+        var clickCounter = 0;
+        arrows[i].addEventListener("click", function () {
+            var ratio = Math.floor(window.innerWidth / 270);
+            clickCounter++;
+            // Check if there's enough room to scroll in the movie list
+            if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
+                // Scroll the movie list to the left from its current position
+                movieLists[i].style.transform = "translateX(" + (movieLists[i].computedStyleMap().get("transform")[0].x.value - 300) + "px)";
+            } else {
+                movieLists[i].style.transform = "translateX(0)";
+                clickCounter = 0;
+            }
+        });
+    })(i);
+    console.log(Math.floor(window.innerWidth / 270));
+}
 
-arrows.forEach((arrow, i) => {
-  const itemNumber = movieLists[i].querySelectorAll("iframe").length;
-  let clickCounter = 0;
-  arrow.addEventListener("click", () => {
-    const ratio = Math.floor(window.innerWidth / 270);
-    clickCounter++;
-    if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
-      movieLists[i].style.transform = `translateX(${
-        movieLists[i].computedStyleMap().get("transform")[0].x.value - 300
-      }px)`;
-    } else {
-      movieLists[i].style.transform = "translateX(0)";
-      clickCounter = 0;
-    }
-  });
-
-  console.log(Math.floor(window.innerWidth / 270));
-});
 
 
-//TOGGLE
-
-const ball = document.querySelector(".toggle-ball");
-const items = document.querySelectorAll(
-  ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
+// Toggle the theme when toggle switch is clicked
+var ball = document.querySelector(".toggle-switch");
+var items = document.querySelectorAll(
+    ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
 );
 
-ball.addEventListener("click", () => {
-  items.forEach((item) => {
-    item.classList.toggle("active");
-  });
-  ball.classList.toggle("active");
+ball.addEventListener("click", function () {
+    // Toggle active class on each item to switch its appearance
+    for (var i = 0; i < items.length; i++) {
+        items[i].classList.toggle("active");
+    }
+    ball.classList.toggle("active");
 });
+

@@ -342,14 +342,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // function for list of trailers' button arrow
 
-const arrows = document.querySelectorAll(".arrow");
-const movieLists = document.querySelectorAll(".movie-list");
+var arrows = document.querySelectorAll(".arrow");
+var movieLists = document.querySelectorAll(".movie-list");
 
 arrows.forEach((arrow, i) => {
-  const itemNumber = movieLists[i].querySelectorAll("iframe").length;
-  let clickCounter = 0;
+  var itemNumber = movieLists[i].querySelectorAll("iframe").length;
+  var clickCounter = 0;
   arrow.addEventListener("click", () => {
-    const ratio = Math.floor(window.innerWidth / 270);
+    var ratio = Math.floor(window.innerWidth / 270);
     clickCounter++;
     if (itemNumber - (4 + clickCounter) + (4 - ratio) >= 0) {
       movieLists[i].style.transform = `translateX(${
@@ -367,8 +367,8 @@ arrows.forEach((arrow, i) => {
 
 //TOGGLE
 
-const ball = document.querySelector(".toggle-ball");
-const items = document.querySelectorAll(
+var ball = document.querySelector(".toggle-ball");
+var items = document.querySelectorAll(
   ".container,.movie-list-title,.navbar-container,.sidebar,.left-menu-icon,.toggle"
 );
 

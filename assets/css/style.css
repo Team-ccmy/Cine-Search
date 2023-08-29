@@ -416,8 +416,16 @@ a {
     background-color: var(--main-color);
 }
 
+[data-theme="dark"] #search-input {
+    color: white;
+}
+
 [data-theme="dark"] .card .card-content .card-title {
     color: var(--light-color) !important;
+    overflow: scroll;
+    margin-bottom: 100px !important;
+    height: 48px;
+
 }
 
 [data-theme="dark"] .glow {
@@ -538,6 +546,12 @@ a {
 /* Define active styles for the movie list title */
 .movie-list-title.active {
     color: black;
+}
+
+@media screen and (max-width: 700px) {
+    #drop {
+        flex-direction: column;
+    }
 }
 
 /* Keyframe animation for a glowing effect */

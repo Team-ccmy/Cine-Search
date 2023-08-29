@@ -399,6 +399,10 @@ a {
 }
 
 /* Style The Dropdown Button */
+[data-theme="dark"] .select-dropdown {
+    color: white;
+}
+
 [data-theme="dark"] .dropdown-content {
     background-color: var(--main-color);
 }
@@ -548,7 +552,7 @@ a {
     color: black;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 900px) {
     #drop {
         flex-direction: column;
     }

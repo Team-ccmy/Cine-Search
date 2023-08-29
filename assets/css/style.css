@@ -8,6 +8,14 @@
     --dark-mode: #18edf1;
 }
 
+.card .card-content .card-title {
+  overflow: scroll;
+  margin-bottom: 115px !important;
+}
+[data-theme=“dark”] #search-input {
+    color: white;
+}
+
 body {
     /* General styling for the entire document */
     transition: background-color 0.3s, color 0.3s;

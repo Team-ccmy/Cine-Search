@@ -344,7 +344,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         var query = queryInput.value
         var tmdbApiKey = 'ff2971a496e122549ee3b82e1c22d1e9';
-        var youtubeApiKey = 'AIzaSyAn_d7ue2ey-H-g9wDmhVagSwxiCWuTzM0';
+        var youtubeApiKey = 'AIzaSyD1GXB-oVdEu9D2k2ig5K7F14T0pk_OyLQ';
 
         // Fetch movie titles from the TMDB API
         fetch(`https://api.themoviedb.org/3/search/movie?api_key=` + tmdbApiKey + `&query=` + query)
